@@ -61,12 +61,39 @@ class Tree {
             
             if (tmp.data === value) {
                 if(((tmp.right === null) !== (tmp.left === null))) {
+                    if (prev === undefined) {
+                        tmp.data = tmp.right === null ? tmp.left.data : tmp.right.data;
+                        tmp.right = null;
+                        tmp.left = null;
+                        return
+                    }
                     if(prev.right.data === tmp.data) {
                         prev.right = tmp.right === null ? tmp.left : tmp.right
                     } else {
                         prev.left = tmp.right === null ? tmp.left : tmp.right
                     }
                     return
+                }
+
+                if (tmp.right !== null && tmp.left !== null) {
+                    let biggestSucessor = tmp.right;
+                    while (biggestSucessor.left !== null) {
+                        biggestSucessor = biggestSucessor.left
+                    }
+                    
+                    let data = biggestSucessor.data
+                    this.deleteItem(data);
+                    
+                    if (prev !== undefined && prev.right.data === value) {
+                        prev.right.data = data;
+                        return
+                    } else if (prev !== undefined && prev.left.data === value) {
+                        prev.left.data = data;
+                        return
+                    }
+                    tmp.data = data
+                    return
+                    
                 }
             }
             if (value < tmp.data) {
@@ -80,10 +107,10 @@ class Tree {
                 prev = tmp;
                 tmp = tmp.right;
             }
-                console.log(tmp.data);
+                //console.log(tmp.data);
         }
 
-        console.log(prev);
+        //console.log(prev);
         
         if(prev.right !== null && prev.right.data === value) {
             prev.right = null;
@@ -116,20 +143,28 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-let BSTtreeObject = BSTtree.buildTree([0,1,2,3,4,6,7,8])
+let BSTtreeObject = BSTtree.buildTree([0,1,2,3,5, 9, 10, 11,12,13,4,6,7,8])
 
 //BSTtree.insert(5)
 //BSTtree.insert(-2)
 //BSTtree.insert(9)
-//BSTtree.deleteItem(8);
-BSTtree.deleteItem(0);
-//BSTtree.deleteItem(2);
-BSTtree.deleteItem(4);
-BSTtree.deleteItem(1);
-BSTtree.deleteItem(7);
+
 BSTtree.deleteItem(6);
-BSTtree.deleteItem(8);
+BSTtree.deleteItem(13);
+BSTtree.deleteItem(11);
+BSTtree.deleteItem(10);
 BSTtree.deleteItem(2);
+BSTtree.deleteItem(3);
+BSTtree.deleteItem(4);
+BSTtree.deleteItem(5);
+BSTtree.deleteItem(0);
+BSTtree.deleteItem(1);
+BSTtree.deleteItem(12);
+BSTtree.deleteItem(9);
+BSTtree.deleteItem(7);
+
+//BSTtree.deleteItem(9);
+
 
 prettyPrint(BSTtree.root)
 
