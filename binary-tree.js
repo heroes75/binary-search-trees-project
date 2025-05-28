@@ -65,14 +65,14 @@ class Tree {
                         tmp.data = tmp.right === null ? tmp.left.data : tmp.right.data;
                         tmp.right = null;
                         tmp.left = null;
-                        return
+                        return value
                     }
                     if(prev.right.data === tmp.data) {
                         prev.right = tmp.right === null ? tmp.left : tmp.right
                     } else {
                         prev.left = tmp.right === null ? tmp.left : tmp.right
                     }
-                    return
+                    return value
                 }
 
                 if (tmp.right !== null && tmp.left !== null) {
@@ -86,13 +86,13 @@ class Tree {
                     
                     if (prev !== undefined && prev.right.data === value) {
                         prev.right.data = data;
-                        return
+                        return data
                     } else if (prev !== undefined && prev.left.data === value) {
                         prev.left.data = data;
-                        return
+                        return data
                     }
                     tmp.data = data
-                    return
+                    return data
                     
                 }
             }
@@ -114,8 +114,44 @@ class Tree {
         
         if(prev.right !== null && prev.right.data === value) {
             prev.right = null;
+            return value;
         } else if(prev.left !== null && prev.left.data === value) {
             prev.left = null;
+            return value;
+
+        }
+        return null
+    }
+
+    find(value) {
+        let tmp = this.root;
+        //let prev;
+        while (tmp.right !== null && tmp.left !== null) {
+            if (tmp.data === value) {
+                return tmp
+            }
+            if (value < tmp.data) {
+                tmp = tmp.left;
+            } else {
+                tmp = tmp.right;
+            }
+        }
+
+        if (tmp.data === value) {
+            return tmp
+        }
+
+        return null
+    }
+
+    levelOrder(callback) {
+        let tmp = this.root;
+        let arr = [];
+
+        // make condition on if arr is empty or no
+        while (tmp.right !== null && tmp.left !== null) {
+            callback(tmp.left.data)
+            arr.push(tmp.left)
         }
     }
 
@@ -150,20 +186,9 @@ let BSTtreeObject = BSTtree.buildTree([0,1,2,3,5, 9, 10, 11,12,13,4,6,7,8])
 //BSTtree.insert(9)
 
 BSTtree.deleteItem(6);
-BSTtree.deleteItem(13);
-BSTtree.deleteItem(11);
-BSTtree.deleteItem(10);
-BSTtree.deleteItem(2);
-BSTtree.deleteItem(3);
-BSTtree.deleteItem(4);
-BSTtree.deleteItem(5);
-BSTtree.deleteItem(0);
-BSTtree.deleteItem(1);
-BSTtree.deleteItem(12);
-BSTtree.deleteItem(9);
-BSTtree.deleteItem(7);
 
-//BSTtree.deleteItem(9);
+console.log(BSTtree.deleteItem(18));
+console.log(BSTtree.find(12));
 
 
 prettyPrint(BSTtree.root)
