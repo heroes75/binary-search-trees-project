@@ -126,20 +126,23 @@ class Tree {
     find(value) {
         let tmp = this.root;
         //let prev;
-        while (tmp.right !== null && tmp.left !== null) {
+        while (tmp  !== null) {
             if (tmp.data === value) {
                 return tmp
             }
+            //console.log(tmp);
             if (value < tmp.data) {
                 tmp = tmp.left;
             } else {
                 tmp = tmp.right;
             }
+            //console.log(tmp);
+            
         }
 
-        if (tmp.data === value) {
-            return tmp
-        }
+        //if (tmp.data === value) {
+        //    return tmp
+        //}
 
         return null
     }
@@ -200,9 +203,20 @@ class Tree {
         callback(root);
     }
 
-    height(value) {
+    height(value, count = 0) {
+        //console.log("heer start the recursion");
         let nodeValue = this.find(value);
+        //console.log(value);
         
+        if (nodeValue.right === null && nodeValue.left === null) return 0;
+        //count++;
+        let count1 = nodeValue.left === null ? 0 : 1;
+        let count2 = nodeValue.right === null ? 0 : 1;
+        count1 = count1 + (nodeValue.left === null ? 0 : this.height(nodeValue.left.data, count1))
+        count2 = count2 + (nodeValue.right === null ? 0 : this.height(nodeValue.right.data, count2))
+        console.log(nodeValue.data, count1, count2);
+        
+        return Math.max(count1, count2)
     }
 }
 
@@ -230,10 +244,18 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 let BSTtreeObject = BSTtree.buildTree([0,1,2,3,5, 9, 10, 11,12,13,4,6,7,8,-1])
 
 //BSTtree.insert(5)
-//BSTtree.insert(-2)
+BSTtree.insert(-2)
 //BSTtree.insert(9)
 
-//BSTtree.deleteItem(6);
+BSTtree.deleteItem(6);
+BSTtree.deleteItem(9);
+BSTtree.deleteItem(3);
+BSTtree.deleteItem(1);
+BSTtree.deleteItem(2);
+BSTtree.deleteItem(8);
+BSTtree.deleteItem(11);
+BSTtree.deleteItem(13);
+BSTtree.deleteItem(5);
 
 console.log(BSTtree.deleteItem(18));
 console.log(BSTtree.find(12));
@@ -263,6 +285,9 @@ console.log(arrIn);
 console.log("post order traversal");
 BSTtree.postOrder(callbackPost);
 console.log(arrPost);
+
+console.log(BSTtree.find(0));
+console.log(BSTtree.height(7));
 
 prettyPrint(BSTtree.root)
 
