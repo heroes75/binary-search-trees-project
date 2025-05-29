@@ -147,15 +147,63 @@ class Tree {
     levelOrder(callback) {
         let tmp = this.root;
         let arr = [];
+        let queue = [this.root];
+
+        if(callback === undefined) throw new Error("fonction nedeed");
+        
 
         // make condition on if arr is empty or no
-        while (tmp.right !== null && tmp.left !== null) {
-            callback(tmp.left.data)
-            arr.push(tmp.left)
+        while (queue.length !== 0) {
+            if (queue[0].left !== null) {
+                queue.push(queue[0].left);
+            }
+            
+            if (queue[0].right !== null) queue.push(queue[0].right);
+            callback(queue[0]);
+            queue.shift();
         }
     }
 
+    levelOrderRecursion(callback, queue = [this.root]) {
+        
+        if(callback === undefined) throw new Error("fonction nedeed");
+        if(queue.length === 0) return;
+        if (queue[0].left !== null) queue.push(queue[0].left);
+        if (queue[0].right !== null) queue.push(queue[0].right);
+        callback(queue[0]);
+        queue.shift();
+        this.levelOrderRecursion(callback, queue)
 
+    }
+
+    preOrder(callback, root = this.root) {
+        if(callback === undefined) throw new Error("fonction nedeed");
+        if(root === null) return
+        callback(root);
+        this.preOrder(callback, root.left)
+        this.preOrder(callback, root.right)
+    }
+
+    inOrder(callback, root = this.root) {
+        if(callback === undefined) throw new Error("fonction nedeed");
+        if(root === null) return
+        this.inOrder(callback, root.left)
+        callback(root);
+        this.inOrder(callback, root.right)
+    }
+
+    postOrder(callback, root = this.root) {
+        if(callback === undefined) throw new Error("fonction nedeed");
+        if(root === null) return
+        this.postOrder(callback, root.left)
+        this.postOrder(callback, root.right)
+        callback(root);
+    }
+
+    height(value) {
+        let nodeValue = this.find(value);
+        
+    }
 }
 
 
@@ -179,17 +227,42 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-let BSTtreeObject = BSTtree.buildTree([0,1,2,3,5, 9, 10, 11,12,13,4,6,7,8])
+let BSTtreeObject = BSTtree.buildTree([0,1,2,3,5, 9, 10, 11,12,13,4,6,7,8,-1])
 
 //BSTtree.insert(5)
 //BSTtree.insert(-2)
 //BSTtree.insert(9)
 
-BSTtree.deleteItem(6);
+//BSTtree.deleteItem(6);
 
 console.log(BSTtree.deleteItem(18));
 console.log(BSTtree.find(12));
 
+let arrIn = [];
+const callbackIn = (e) =>  arrIn.push(e.data);
+
+let arrPost = [];
+const callbackPost = (e) =>  arrPost.push(e.data);
+
+let arrPre = [];
+const callbackPre = (e) =>  arrPre.push(e.data);
+
+let arrLevel = [];
+const callbackLevel = (e) =>  arrLevel.push(e.data);
+
+
+console.log("level order traversal");  
+BSTtree.levelOrder(callbackLevel);
+console.log(arrLevel);
+console.log("pre order traversal");  
+BSTtree.preOrder(callbackPre);
+console.log(arrPre);
+console.log("in order traversal");  
+BSTtree.inOrder(callbackIn);
+console.log(arrIn);
+console.log("post order traversal");
+BSTtree.postOrder(callbackPost);
+console.log(arrPost);
 
 prettyPrint(BSTtree.root)
 
