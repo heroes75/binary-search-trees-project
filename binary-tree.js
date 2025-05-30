@@ -238,22 +238,32 @@ class Tree {
     }
 
     isBalanced(root = this.root) {
-        console.log("herre");
-        let heightOfLeft = root.left === null ? 0 : this.height(root.left.data);
-        let datatOfLeft = root.left === null ? "" : root.left.data;
-        let heightOfRight = root.right === null ? 0 : this.height(root.right.data);
-        let datatOfRight = root.left === null ? "" : root.right.data;
-        console.log("this.height.left " + datatOfLeft , heightOfLeft, "this.height.right " + datatOfRight, heightOfRight);
+        console.log("herre", root);
+        //let heightOfLeft = (root === null || root.left === null) ? 0 : this.height(root.left.data);
+        //let datatOfLeft = (root === null || root.left === null) ? "" : root.left.data;
+        //let heightOfRight = (root === null || root.right === null) ? 0 : this.height(root.right.data);
+        //let datatOfRight = (root === null || root.left === null) ? "" : root.right.data;
+        //console.log("this.height.left " + datatOfLeft , heightOfLeft, "this.height.right " + datatOfRight, heightOfRight);
        
-        if(Math.abs((root.left === null ? 0 : this.height(root.left.data)) - (root.right === null ? 0 : this.height(root.right.data))) > 1) {
+        if(Math.abs(((root === null || root.left === null) ? 0 : this.height(root.left.data)) - ((root === null || root.right === null) ? 0 : this.height(root.right.data))) > 1) {
             return false
         } 
         //if(this.height(root) !== 0) {
         let leftIsBalanced;
         let rightIsBalanced;
-            if(root.left !== null)  leftIsBalanced = this.isBalanced(root.left) === false ? false : true;
-            if(root.right !== null)  rightIsBalanced = this.isBalanced(root.right) === false ? false : true;
+            if(root.left !== null && root.right !== null)  {
+                leftIsBalanced = this.isBalanced(root.left) === false ? false : true;
+                rightIsBalanced = this.isBalanced(root.right) === false ? false : true;
+            } else if(root.left === null && root.right !== null) {
+                console.log(this.height(root.data) <= 1);
+                
+                leftIsBalanced = rightIsBalanced = this.height(root.data) <= 1
+            } else if(root.left !== null && root.right === null)  {
+                console.log(this.height(root.data) <= 1);
+                rightIsBalanced = leftIsBalanced = this.height(root.data) <= 1
+            }
         //}
+        //console.log("this.height.left afer " + datatOfLeft , heightOfLeft, "this.height.right afer " + datatOfRight, heightOfRight);
         return leftIsBalanced &&  rightIsBalanced
     }
 }
@@ -285,7 +295,7 @@ let BSTtreeObject = BSTtree.buildTree([0,1,2,3, 9, 10, 11,12,13,4,6,7,8,-1])
 BSTtree.insert(14)
 BSTtree.insert(456)
 BSTtree.insert(687)*/
-BSTtree.insert(14)
+/*BSTtree.insert(14)
 BSTtree.insert(15)
 BSTtree.insert(17)
 BSTtree.insert(456)
@@ -297,9 +307,10 @@ BSTtree.deleteItem(13);
 BSTtree.deleteItem(10);
 BSTtree.deleteItem(15);
 BSTtree.deleteItem(500);
-BSTtree.deleteItem(456);
+BSTtree.deleteItem(456);*/
 BSTtree.deleteItem(3);
 BSTtree.deleteItem(1);
+BSTtree.deleteItem(4);
 
 
 
