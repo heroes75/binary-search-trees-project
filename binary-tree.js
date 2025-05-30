@@ -36,9 +36,11 @@ class Tree {
     // we can add a duplicate value but i don't know if it's good
     insert(value) {
         let tmp = this.root;
-        console.log(this.root);
+        let prev;
+        //console.log(this.root);
         
-        while (tmp.right !== null && tmp.left !== null) {
+        while (tmp !== null) {
+            prev = tmp
             if (value < tmp.data) {
                 tmp = tmp.left;
             } else {
@@ -46,10 +48,10 @@ class Tree {
             }
         }
 
-        if (value < tmp.data) {
-            tmp.left = new Node(value, null, null)
+        if (value < prev.data) {
+            prev.left = new Node(value, null, null)
         } else {
-            tmp.right = new Node(value, null, null)
+            prev.right = new Node(value, null, null)
         }
     }
 
@@ -57,7 +59,7 @@ class Tree {
         let tmp = this.root;
         let prev;
 
-        while (tmp.right !== null || tmp.left !== null) {
+        while (tmp !== null && (tmp.right !== null || tmp.left !== null)) {
             
             if (tmp.data === value) {
                 if(((tmp.right === null) !== (tmp.left === null))) {
@@ -107,7 +109,7 @@ class Tree {
                 prev = tmp;
                 tmp = tmp.right;
             }
-                //console.log(tmp.data);
+                //console.log(tmp);
         }
 
         //console.log(prev);
@@ -118,7 +120,6 @@ class Tree {
         } else if(prev.left !== null && prev.left.data === value) {
             prev.left = null;
             return value;
-
         }
         return null
     }
@@ -148,8 +149,6 @@ class Tree {
     }
 
     levelOrder(callback) {
-        let tmp = this.root;
-        let arr = [];
         let queue = [this.root];
 
         if(callback === undefined) throw new Error("fonction nedeed");
@@ -203,20 +202,57 @@ class Tree {
         callback(root);
     }
 
-    height(value, count = 0) {
+    height(value) {
         //console.log("heer start the recursion");
         let nodeValue = this.find(value);
         //console.log(value);
-        
+        if(nodeValue === null) return null
         if (nodeValue.right === null && nodeValue.left === null) return 0;
         //count++;
         let count1 = nodeValue.left === null ? 0 : 1;
         let count2 = nodeValue.right === null ? 0 : 1;
-        count1 = count1 + (nodeValue.left === null ? 0 : this.height(nodeValue.left.data, count1))
-        count2 = count2 + (nodeValue.right === null ? 0 : this.height(nodeValue.right.data, count2))
-        console.log(nodeValue.data, count1, count2);
+        count1 = count1 + (nodeValue.left === null ? 0 : this.height(nodeValue.left.data))
+        count2 = count2 + (nodeValue.right === null ? 0 : this.height(nodeValue.right.data))
+        //console.log(nodeValue.data, count1, count2);
         
         return Math.max(count1, count2)
+    }
+
+    depth(value) {
+        let tmp = this.root;
+        let count = 0;
+
+        while (tmp !== null) {
+            if (tmp.data === value) {
+                return count
+            }
+            if (value < tmp.data) {
+                tmp = tmp.left;
+                count++
+            } else {
+                tmp = tmp.right;
+                count++
+            }
+        }
+        return null
+    }
+
+    isBalanced(root = this.root) {
+        console.log("herre");
+        let heightOfLeft = root.left === null ? 0 : this.height(root.left.data);
+        let heightOfRight = root.right === null ? 0 : this.height(root.right.data);
+        console.log("this.height.left " , heightOfLeft, "this.height.right ", heightOfRight);
+       
+        if(Math.abs((root.left === null ? 0 : this.height(root.left.data)) - (root.right === null ? 0 : this.height(root.right.data))) > 1) {
+            return false
+        } 
+        //if(this.height(root) !== 0) {
+        let leftIsBalanced;
+        let rightIsBalanced;
+            if(root.left !== null)  leftIsBalanced = this.isBalanced(root.left) === false ? false : true;
+            if(root.right !== null)  rightIsBalanced = this.isBalanced(root.right) === false ? false : true;
+        //}
+        return leftIsBalanced &&  rightIsBalanced
     }
 }
 
@@ -241,23 +277,31 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-let BSTtreeObject = BSTtree.buildTree([0,1,2,3,5, 9, 10, 11,12,13,4,6,7,8,-1])
+let BSTtreeObject = BSTtree.buildTree([0,1,2,3, 9, 10, 11,12,13,4,6,7,8,-1])
 
-//BSTtree.insert(5)
-BSTtree.insert(-2)
-//BSTtree.insert(9)
+/*BSTtree.insert(5)
+BSTtree.insert(14)
+BSTtree.insert(456)
+BSTtree.insert(687)*/
+BSTtree.insert(14)
+BSTtree.insert(15)
+BSTtree.insert(17)
+BSTtree.insert(456)
+BSTtree.insert(500)
+//BSTtree.insert(2.5)
 
 BSTtree.deleteItem(6);
-BSTtree.deleteItem(9);
+BSTtree.deleteItem(13);
+BSTtree.deleteItem(10);
+BSTtree.deleteItem(15);
+BSTtree.deleteItem(500);
+BSTtree.deleteItem(456);
 BSTtree.deleteItem(3);
 BSTtree.deleteItem(1);
-BSTtree.deleteItem(2);
-BSTtree.deleteItem(8);
-BSTtree.deleteItem(11);
-BSTtree.deleteItem(13);
-BSTtree.deleteItem(5);
 
-console.log(BSTtree.deleteItem(18));
+
+
+console.log("18 is here", BSTtree.deleteItem(18));
 console.log(BSTtree.find(12));
 
 let arrIn = [];
@@ -286,8 +330,10 @@ console.log("post order traversal");
 BSTtree.postOrder(callbackPost);
 console.log(arrPost);
 
-console.log(BSTtree.find(0));
-console.log(BSTtree.height(7));
+console.log(BSTtree.find(2));
+console.log(BSTtree.height(10));
+console.log(BSTtree.depth(7));
+console.log(BSTtree.isBalanced());
 
 prettyPrint(BSTtree.root)
 
