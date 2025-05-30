@@ -240,8 +240,10 @@ class Tree {
     isBalanced(root = this.root) {
         console.log("herre");
         let heightOfLeft = root.left === null ? 0 : this.height(root.left.data);
+        let datatOfLeft = root.left === null ? "" : root.left.data;
         let heightOfRight = root.right === null ? 0 : this.height(root.right.data);
-        console.log("this.height.left " , heightOfLeft, "this.height.right ", heightOfRight);
+        let datatOfRight = root.left === null ? "" : root.right.data;
+        console.log("this.height.left " + datatOfLeft , heightOfLeft, "this.height.right " + datatOfRight, heightOfRight);
        
         if(Math.abs((root.left === null ? 0 : this.height(root.left.data)) - (root.right === null ? 0 : this.height(root.right.data))) > 1) {
             return false
