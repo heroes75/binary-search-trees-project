@@ -44,7 +44,7 @@ function merge( arr1, arr2) {
 
 export default mergeSort;
 
-export const array = (el) => new Array(el).fill(8).map(el => Math.floor(Math.random() * 1000))
+export const array = (el) => new Array(el).fill(8).map(el => Math.floor(Math.random() * 100))
 
 //console.log(mergeSort(array(30)));
 //console.log(Array.from(new Set(mergeSort(array(30)))));

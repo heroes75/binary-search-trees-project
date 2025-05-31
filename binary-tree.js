@@ -43,8 +43,10 @@ class Tree {
             prev = tmp
             if (value < tmp.data) {
                 tmp = tmp.left;
-            } else {
+            } else if (value > tmp.data) {
                 tmp = tmp.right;
+            } else {
+                return
             }
         }
 
@@ -99,11 +101,11 @@ class Tree {
                 }
             }
             if (value < tmp.data) {
-                console.log("+++");
+                //console.log("+++");
                 prev = tmp;
                 tmp = tmp.left;
             } else {
-                console.log("---");
+                //console.log("---");
                 //console.log(tmp.data);
                 
                 prev = tmp;
@@ -238,115 +240,52 @@ class Tree {
     }
 
     isBalanced(root = this.root) {
-        console.log("herre", root);
+        //console.log("herre", root);
         //let heightOfLeft = (root === null || root.left === null) ? 0 : this.height(root.left.data);
         //let datatOfLeft = (root === null || root.left === null) ? "" : root.left.data;
         //let heightOfRight = (root === null || root.right === null) ? 0 : this.height(root.right.data);
-        //let datatOfRight = (root === null || root.left === null) ? "" : root.right.data;
+        //let datatOfRight = (root === null || root.right === null) ? "" : root.right.data;
         //console.log("this.height.left " + datatOfLeft , heightOfLeft, "this.height.right " + datatOfRight, heightOfRight);
-       
+       // cacul if the difference between node left and node right is greater than one
         if(Math.abs(((root === null || root.left === null) ? 0 : this.height(root.left.data)) - ((root === null || root.right === null) ? 0 : this.height(root.right.data))) > 1) {
             return false
         } 
         //if(this.height(root) !== 0) {
         let leftIsBalanced;
         let rightIsBalanced;
+        // we have three cases two childs are not null and one of child is null
             if(root.left !== null && root.right !== null)  {
+                //we use recursion to explore if one child is balaced or not
                 leftIsBalanced = this.isBalanced(root.left) === false ? false : true;
                 rightIsBalanced = this.isBalanced(root.right) === false ? false : true;
+                //console.log(leftIsBalanced, rightIsBalanced);
             } else if(root.left === null && root.right !== null) {
-                console.log(this.height(root.data) <= 1);
-                
+                //console.log(this.height(root.data) <= 1);
+                //if one child is null so determine if the node is balenced or no depends only of the no null child
                 leftIsBalanced = rightIsBalanced = this.height(root.data) <= 1
             } else if(root.left !== null && root.right === null)  {
-                console.log(this.height(root.data) <= 1);
+                //console.log(this.height(root.data) <= 1);
                 rightIsBalanced = leftIsBalanced = this.height(root.data) <= 1
             }
         //}
         //console.log("this.height.left afer " + datatOfLeft , heightOfLeft, "this.height.right afer " + datatOfRight, heightOfRight);
         return leftIsBalanced &&  rightIsBalanced
     }
+
+    rebalance() {
+        //if(this.isBalanced(this.root) === true) return;
+        //console.log(this.arr);
+        this.arr = [];
+        this.inOrder((e) => this.arr.push(e.data));
+        //console.log(this.arr);
+        let start = 0;
+        let end = this.arr.length - 1;
+        this.root = this.createBST(this.arr, start, end)
+    }
 }
 
-
-const arr = array(7);
-
-let BSTtree = new Tree(arr);
-
-//console.log(BSTtree.buildTree(arr));
-//console.log(arr);
-
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-  }
-  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-  }
-};
-
-let BSTtreeObject = BSTtree.buildTree([0,1,2,3, 9, 10, 11,12,13,4,6,7,8,-1])
-
-/*BSTtree.insert(5)
-BSTtree.insert(14)
-BSTtree.insert(456)
-BSTtree.insert(687)*/
-/*BSTtree.insert(14)
-BSTtree.insert(15)
-BSTtree.insert(17)
-BSTtree.insert(456)
-BSTtree.insert(500)
-//BSTtree.insert(2.5)
-
-BSTtree.deleteItem(6);
-BSTtree.deleteItem(13);
-BSTtree.deleteItem(10);
-BSTtree.deleteItem(15);
-BSTtree.deleteItem(500);
-BSTtree.deleteItem(456);*/
-BSTtree.deleteItem(3);
-BSTtree.deleteItem(1);
-BSTtree.deleteItem(4);
+export default Tree;
 
 
 
-console.log("18 is here", BSTtree.deleteItem(18));
-console.log(BSTtree.find(12));
-
-let arrIn = [];
-const callbackIn = (e) =>  arrIn.push(e.data);
-
-let arrPost = [];
-const callbackPost = (e) =>  arrPost.push(e.data);
-
-let arrPre = [];
-const callbackPre = (e) =>  arrPre.push(e.data);
-
-let arrLevel = [];
-const callbackLevel = (e) =>  arrLevel.push(e.data);
-
-
-console.log("level order traversal");  
-BSTtree.levelOrder(callbackLevel);
-console.log(arrLevel);
-console.log("pre order traversal");  
-BSTtree.preOrder(callbackPre);
-console.log(arrPre);
-console.log("in order traversal");  
-BSTtree.inOrder(callbackIn);
-console.log(arrIn);
-console.log("post order traversal");
-BSTtree.postOrder(callbackPost);
-console.log(arrPost);
-
-console.log(BSTtree.find(2));
-console.log(BSTtree.height(10));
-console.log(BSTtree.depth(7));
-console.log(BSTtree.isBalanced());
-
-prettyPrint(BSTtree.root)
-
+    
