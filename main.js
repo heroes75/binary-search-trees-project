@@ -55,7 +55,9 @@ console.log(arrPost);
 console.log(BSTtree.find(2));
 console.log(BSTtree.height(10));
 console.log(BSTtree.depth(7));
-
+BSTtree.deleteItem(arr[3])
+BSTtree.deleteItem(arr[4])
+BSTtree.deleteItem(arr[0])
 prettyPrint(BSTtree.root);
 console.log("unbalence the tree here");
 
@@ -64,10 +66,11 @@ BSTtree.insert(103);
 BSTtree.insert(108);
 BSTtree.insert(128);
 BSTtree.insert(308);
+
 prettyPrint(BSTtree.root);
 console.log("is balenced", BSTtree.isBalanced());
 BSTtree.rebalance()
-prettyPrint(BSTtree.root);
+prettyPrint(BSTtree.root)
 console.log("is balenced", BSTtree.isBalanced());
 
 console.log("level order traversal");  
